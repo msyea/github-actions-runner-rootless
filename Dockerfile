@@ -2,10 +2,6 @@ FROM msyea/ubuntu-dind
 
 RUN apt-get -y install curl
 
-# Docker compose installation
-RUN curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose \
-	&& chmod +x /usr/local/bin/docker-compose
-
 RUN adduser --disabled-password runner
 USER runner
 WORKDIR /actions-runner
