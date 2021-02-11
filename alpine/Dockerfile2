@@ -1,0 +1,26 @@
+FROM ubuntu:focal
+
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt -y  update && apt -y upgrade
+RUN apt -y install wget
+
+# set up subuid/subgid so that "--userns-remap=default" works out-of-the-box
+RUN set -eux; \
+	addgroup dockremap; \
+	adduser dockremap dockremap; \
+	echo 'dockremap:165536:65536' >> /etc/subuid; \
+	echo 'dockremap:165536:65536' >> /etc/subgid
+
+# https://github.com/docker/docker/tree/master/hack/dind
+
+RUN set -eux; \
+	wget -O /usr/local/bin/dind "https://raw.githubusercontent.com/moby/moby/master/hack/dind"; \
+	chmod +x /usr/local/bin/dind
+
+COPY dockerd-entrypoint.sh /usr/local/bin/
+
+VOLUME /var/lib/docker
+EXPOSE 2375 2376
+
+ENTRYPOINT ["dockerd-entrypoint.sh"]
+CMD []
