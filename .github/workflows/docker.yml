@@ -1,6 +1,9 @@
 name: Publish Docker image
 on:
   push:
+    branches: [ $default-branch ]
+  pull_request:
+    branches: [ $default-branch ]
 jobs:
   push_docker:
     name: Push Ubuntu Docker image to Docker Hub
