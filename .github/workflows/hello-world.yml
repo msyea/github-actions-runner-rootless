@@ -1,0 +1,13 @@
+# This is a basic workflow to help you get started with Actions!!!
+
+name: Hello World
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: [self-hosted, linux]
+    steps:
+      - name: docker
+        uses: docker://hello-world
