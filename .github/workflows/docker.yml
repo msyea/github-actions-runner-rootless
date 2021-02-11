@@ -1,0 +1,45 @@
+name: Publish Docker image
+on:
+  push:
+jobs:
+  push_docker:
+    name: Push Ubuntu Docker image to Docker Hub
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      - name: Push to Docker Hub
+        uses: docker/build-push-action@v1
+        with:
+          file: ./Dockerfile.docker
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: msyea/ubuntu-docker
+          tag_with_ref: true
+  push_dind:
+    name: Push Ubuntu DinD image to Docker Hub
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      - name: Push to Docker Hub
+        uses: docker/build-push-action@v1
+        with:
+          file: ./Dockerfile.dind
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: msyea/ubuntu-dind
+          tag_with_ref: true
+  push_gha:
+    name: Push GitHub Actions runner image to Docker Hub
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      - name: Push to Docker Hub
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: msyea/github-actions-runner
+          tag_with_ref: true

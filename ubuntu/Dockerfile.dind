@@ -1,0 +1,40 @@
+#
+# NOTE: THIS DOCKERFILE IS GENERATED VIA "apply-templates.sh"
+#
+# PLEASE DO NOT EDIT IT DIRECTLY.
+#
+
+FROM msyea/ubuntu-docker
+
+# https://github.com/docker/docker/blob/master/project/PACKAGERS.md#runtime-dependencies
+ENV DEBIAN_FRONTEND=noninteractive
+RUN set -eux; \
+	  apt-get update && \
+    apt-get -y install \
+		btrfs-progs \
+		e2fsprogs \
+		iptables \
+		openssl \
+		uidmap \
+		xfsprogs \
+		xz-utils \
+		pigz \
+    wget \
+    iproute2 \
+    kmod    
+
+# set up subuid/subgid so that "--userns-remap=default" works out-of-the-box
+RUN set -eux; \
+	addgroup --system dockremap; \
+	adduser --system --ingroup dockremap dockremap; \
+	echo 'dockremap:165536:65536' >> /etc/subuid; \
+	echo 'dockremap:165536:65536' >> /etc/subgid
+
+COPY dind /usr/local/bin/
+COPY dockerd-entrypoint.sh /usr/local/bin/
+
+VOLUME /var/lib/docker
+EXPOSE 2375 2376
+
+ENTRYPOINT ["dockerd-entrypoint.sh"]
+CMD []
