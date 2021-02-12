@@ -50,11 +50,11 @@ USER root
 RUN ./bin/installdependencies.sh
 
 COPY github-actions-entrypoint.sh runner.sh token.sh dockerd-rootless.sh dockerd-rootless-setup-tool.sh /usr/local/bin/
+USER rootless
 RUN dockerd-rootless-setup-tool.sh install
 ENV XDG_RUNTIME_DIR=/home/rootless/.docker/run \
  PATH=/usr/local/bin:$PATH \
  DOCKER_HOST=unix:///home/rootless/.docker/run/docker.sock
-USER rootless
 
 # RUN groupadd docker \
 #   && usermod -aG docker runner
