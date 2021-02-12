@@ -1,20 +1,11 @@
 FROM msyea/ubuntu-dind
 
-# "/run/user/UID" will be used by default as the value of XDG_RUNTIME_DIR
-RUN mkdir /run/user && chmod 1777 /run/user
-
-# create a default user preconfigured for running rootless dockerd
-RUN set -eux; \
-	adduser --home /home/rootless --gecos 'Rootless' --disabled-password rootless; \
-	echo 'rootless:100000:65536' >> /etc/subuid; \
-	echo 'rootless:100000:65536' >> /etc/subgid
-
 RUN apt-get -y install curl supervisor
 
-# RUN adduser --disabled-password runner
+RUN adduser --disabled-password runner
 WORKDIR /actions-runner
-RUN chown rootless:rootless /actions-runner
-USER rootless
+RUN chown runner:runner /actions-runner
+USER runner
 RUN curl -O -L https://github.com/actions/runner/releases/download/v2.277.1/actions-runner-linux-x64-2.277.1.tar.gz
 RUN tar xzf ./actions-runner-linux-x64-2.277.1.tar.gz
 USER root
@@ -25,6 +16,15 @@ COPY logger.sh /opt/bash-utils/logger.sh
 
 # note https://github.com/docker-library/docker/issues/200#issuecomment-550089770
 COPY startup.sh /usr/local/bin/
+
+# "/run/user/UID" will be used by default as the value of XDG_RUNTIME_DIR
+RUN mkdir /run/user && chmod 1777 /run/user
+
+# create a default user preconfigured for running rootless dockerd
+RUN set -eux; \
+	adduser --home /home/rootless --gecos 'Rootless' --disabled-password rootless; \
+	echo 'rootless:100000:65536' >> /etc/subuid; \
+	echo 'rootless:100000:65536' >> /etc/subgid
 
 RUN set -eux; \
 	\
@@ -57,8 +57,8 @@ RUN set -eux; \
 	chown -R rootless:rootless /home/rootless/.local/share/docker
 VOLUME /home/rootless/.local/share/docker
 
-# RUN groupadd docker \
-#   && usermod -aG docker runner
+RUN groupadd docker \
+  && usermod -aG docker runner
 
 COPY github-actions-entrypoint.sh runner.sh token.sh dockerd-rootless.sh dockerd-rootless-setup-tool.sh /usr/local/bin/
 
