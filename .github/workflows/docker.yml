@@ -1,9 +1,8 @@
 name: Publish Docker image
 on:
   push:
-    branches: [ $default-branch ]
-  pull_request:
-    branches: [ $default-branch ]
+    branches:
+      - main
 jobs:
   push_docker:
     name: Push Ubuntu Docker image to Docker Hub
@@ -12,7 +11,7 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v2
       - name: Login to DockerHub
-        uses: docker/login-action@v1 
+        uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -30,7 +29,7 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v2
       - name: Login to DockerHub
-        uses: docker/login-action@v1 
+        uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -48,7 +47,7 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v2
       - name: Login to DockerHub
-        uses: docker/login-action@v1 
+        uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
