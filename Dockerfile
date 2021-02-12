@@ -11,11 +11,11 @@ RUN adduser --disabled-password runner
 # USER root
 # RUN ./bin/installdependencies.sh
 
-COPY supervisor/ /etc/supervisor/conf.d/
-COPY logger.sh /opt/bash-utils/logger.sh
+# COPY supervisor/ /etc/supervisor/conf.d/
+# COPY logger.sh /opt/bash-utils/logger.sh
 
 # note https://github.com/docker-library/docker/issues/200#issuecomment-550089770
-COPY startup.sh /usr/local/bin/
+# COPY startup.sh /usr/local/bin/
 
 # "/run/user/UID" will be used by default as the value of XDG_RUNTIME_DIR
 RUN mkdir /run/user && chmod 1777 /run/user
