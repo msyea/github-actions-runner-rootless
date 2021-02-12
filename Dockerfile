@@ -40,6 +40,9 @@ RUN set -eux; \
 	chown -R rootless:rootless /home/rootless/.local/share/docker
 VOLUME /home/rootless/.local/share/docker
 
+WORKDIR /actions-runner
+RUN chown rootless:rootless /actions-runner
+
 RUN wget -O actions-runner-linux-x64-2.277.1.tar.gz https://github.com/actions/runner/releases/download/v2.277.1/actions-runner-linux-x64-2.277.1.tar.gz; \
   tar xzf ./actions-runner-linux-x64-2.277.1.tar.gz
 
