@@ -3,7 +3,9 @@ FROM msyea/ubuntu-dind
 # "/run/user/UID" will be used by default as the value of XDG_RUNTIME_DIR
 RUN mkdir /run/user && chmod 1777 /run/user
 
+# look into guid !!!
 RUN adduser --disabled-password runner
+
 # create a default user preconfigured for running rootless dockerd
 RUN set -eux; \
 	adduser --home /home/rootless --gecos 'Rootless' --disabled-password rootless; \
@@ -41,15 +43,15 @@ RUN set -eux; \
 	chown -R rootless:rootless /home/rootless/.local/share/docker
 VOLUME /home/rootless/.local/share/docker
 
-RUN apt-get -y install curl supervisor
+# RUN apt-get -y install curl supervisor
 
-# WORKDIR /actions-runner
-# RUN chown runner:runner /actions-runner
-# USER runner
-# RUN curl -O -L https://github.com/actions/runner/releases/download/v2.277.1/actions-runner-linux-x64-2.277.1.tar.gz
-# RUN tar xzf ./actions-runner-linux-x64-2.277.1.tar.gz
-# USER root
-# RUN ./bin/installdependencies.sh
+WORKDIR /actions-runner
+RUN chown runner:runner /actions-runner
+USER runner
+RUN curl -O -L https://github.com/actions/runner/releases/download/v2.277.1/actions-runner-linux-x64-2.277.1.tar.gz
+RUN tar xzf ./actions-runner-linux-x64-2.277.1.tar.gz
+USER root
+RUN ./bin/installdependencies.sh
 
 # COPY supervisor/ /etc/supervisor/conf.d/
 # COPY logger.sh /opt/bash-utils/logger.sh
