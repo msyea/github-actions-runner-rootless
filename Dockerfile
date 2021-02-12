@@ -49,12 +49,13 @@ RUN wget -O actions-runner-linux-x64-2.277.1.tar.gz https://github.com/actions/r
 USER root
 RUN ./bin/installdependencies.sh
 
+COPY github-actions-entrypoint.sh runner.sh token.sh dockerd-rootless.sh dockerd-rootless-setup-tool.sh /usr/local/bin/
+
 USER rootless
 
 # RUN groupadd docker \
 #   && usermod -aG docker runner
 
-# COPY github-actions-entrypoint.sh runner.sh token.sh dockerd-rootless.sh dockerd-rootless-setup-tool.sh /usr/local/bin/
 
 # ENTRYPOINT [""]
 
