@@ -4,7 +4,7 @@ FROM msyea/ubuntu-dind
 RUN mkdir /run/user && chmod 1777 /run/user
 
 # look into guid !!!
-# RUN adduser --disabled-password runner
+RUN adduser --disabled-password runner
 
 # create a default user preconfigured for running rootless dockerd
 RUN set -eux; \
