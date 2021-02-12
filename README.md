@@ -11,3 +11,16 @@ Built on `ubuntu:20.04`, configured for rootless dind 🎉, core contributers @m
 https://github.com/cruizba/ubuntu-dind
 https://github.com/myoung34/docker-github-actions-runner
 https://github.com/docker-library/docker/tree/master/20.10/dind
+
+
+```
+# start container
+docker run --privileged -it msyea/github-actions-runner bash
+
+# start dockerd
+dockerd-rootless.sh &
+
+# test
+docker ps
+docker run hello-world
+```
