@@ -57,8 +57,8 @@ RUN set -eux; \
 	chown -R rootless:rootless /home/rootless/.local/share/docker
 VOLUME /home/rootless/.local/share/docker
 
-RUN groupadd docker \
-  && usermod -aG docker runner
+# RUN groupadd docker \
+#   && usermod -aG docker runner
 
 COPY github-actions-entrypoint.sh runner.sh token.sh dockerd-rootless.sh dockerd-rootless-setup-tool.sh /usr/local/bin/
 
