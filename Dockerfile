@@ -62,4 +62,6 @@ RUN groupadd docker \
 
 COPY github-actions-entrypoint.sh runner.sh token.sh dockerd-rootless.sh dockerd-rootless-setup-tool.sh /usr/local/bin/
 
+USER rootless
+
 ENTRYPOINT [""]
