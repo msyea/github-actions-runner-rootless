@@ -46,7 +46,7 @@ VOLUME /home/rootless/.local/share/docker
 # RUN apt-get -y install curl supervisor
 
 WORKDIR /actions-runner
-RUN chown runner:runner /actions-runner
+RUN chown rootless:rootless /actions-runner
 USER runner
 RUN wget -O actions-runner-linux-x64-2.277.1.tar.gz https://github.com/actions/runner/releases/download/v2.277.1/actions-runner-linux-x64-2.277.1.tar.gz
 RUN tar xzf ./actions-runner-linux-x64-2.277.1.tar.gz
