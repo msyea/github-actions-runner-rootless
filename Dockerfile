@@ -1,5 +1,14 @@
 FROM msyea/ubuntu-dind
 
+# "/run/user/UID" will be used by default as the value of XDG_RUNTIME_DIR
+RUN mkdir /run/user && chmod 1777 /run/user
+
+# create a default user preconfigured for running rootless dockerd
+RUN set -eux; \
+	adduser --home /home/rootless --gecos 'Rootless' --disabled-password rootless; \
+	echo 'rootless:100000:65536' >> /etc/subuid; \
+	echo 'rootless:100000:65536' >> /etc/subgid
+
 RUN apt-get -y install curl supervisor
 
 # RUN adduser --disabled-password runner
@@ -16,15 +25,6 @@ COPY logger.sh /opt/bash-utils/logger.sh
 
 # note https://github.com/docker-library/docker/issues/200#issuecomment-550089770
 COPY startup.sh /usr/local/bin/
-
-# "/run/user/UID" will be used by default as the value of XDG_RUNTIME_DIR
-RUN mkdir /run/user && chmod 1777 /run/user
-
-# create a default user preconfigured for running rootless dockerd
-RUN set -eux; \
-	adduser --home /home/rootless --gecos 'Rootless' --disabled-password rootless; \
-	echo 'rootless:100000:65536' >> /etc/subuid; \
-	echo 'rootless:100000:65536' >> /etc/subgid
 
 RUN set -eux; \
 	\
