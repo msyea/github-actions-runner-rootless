@@ -2,7 +2,7 @@ FROM msyea/ubuntu-dind
 
 RUN apt-get -y install curl supervisor
 
-# RUN adduser --disabled-password runner
+RUN adduser --disabled-password runner
 # WORKDIR /actions-runner
 # RUN chown runner:runner /actions-runner
 # USER runner
