@@ -64,4 +64,8 @@ COPY github-actions-entrypoint.sh runner.sh token.sh dockerd-rootless.sh dockerd
 
 USER rootless
 RUN dockerd-rootless-setup-tool.sh install
+ENV export XDG_RUNTIME_DIR=/home/rootless/.docker/run \
+ PATH=/usr/local/bin:$PATH \
+ DOCKER_HOST=unix:///home/rootless/.docker/run/docker.sock
+
 ENTRYPOINT [""]
