@@ -3,6 +3,7 @@ FROM msyea/ubuntu-dind
 # "/run/user/UID" will be used by default as the value of XDG_RUNTIME_DIR
 RUN mkdir /run/user && chmod 1777 /run/user
 
+RUN adduser --disabled-password runner
 # create a default user preconfigured for running rootless dockerd
 RUN set -eux; \
 	adduser --home /home/rootless --gecos 'Rootless' --disabled-password rootless; \
@@ -42,7 +43,6 @@ VOLUME /home/rootless/.local/share/docker
 
 RUN apt-get -y install curl supervisor
 
-RUN adduser --disabled-password runner
 # WORKDIR /actions-runner
 # RUN chown runner:runner /actions-runner
 # USER runner
