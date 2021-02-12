@@ -32,6 +32,3 @@ for process in "${processes[@]}"; do
         INFO "$process is running"
     fi
 done
-
-# Wait processes to be running
-/bin/bash
