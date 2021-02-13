@@ -3,8 +3,8 @@
 #
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
-ARG REGISTRY
-FROM ${REGISTRY}msyea/ubuntu-docker
+ARG REGISTRY=msyea
+FROM ${REGISTRY}/ubuntu-docker
 
 # https://github.com/docker/docker/blob/master/project/PACKAGERS.md#runtime-dependencies
 ENV DEBIAN_FRONTEND=noninteractive

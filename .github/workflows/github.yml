@@ -12,14 +12,14 @@ jobs:
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
         with:
-          registry: ghcr.io
+          registry: docker.pkg.github.com
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Push to GitHub
         uses: docker/build-push-action@v2
         with:
           file: ./Dockerfile.docker
-          tags: ghcr.io/msyea/ubuntu-docker
+          tags: docker.pkg.github.com/msyea/github-actions-runner/ubuntu-docker
           push: true
   push_dind:
     needs: push_docker
@@ -31,16 +31,16 @@ jobs:
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
         with:
-          registry: ghcr.io
+          registry: docker.pkg.github.com
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Push to GitHub
         uses: docker/build-push-action@v2
         with:
           file: ./Dockerfile.dind
-          tags: ghcr.io/msyea/ubuntu-dind
+          tags: docker.pkg.github.com/msyea/github-actions-runner/ubuntu-dind
           push: true
-          build-args: REGISTRY=ghcr.io/
+          build-args: REGISTRY=docker.pkg.github.com/msyea/github-actions-runner
   push_gha:
     needs: [push_docker, push_dind]
     name: Push GitHub Actions runner image to GitHub
@@ -51,12 +51,12 @@ jobs:
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
         with:
-          registry: ghcr.io
+          registry: docker.pkg.github.com
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Push to GitHub
         uses: docker/build-push-action@v2
         with:
-          tags: ghcr.io/msyea/github-actions-runner
+          tags: docker.pkg.github.com/msyea/github-actions-runner/github-actions-runner
           push: true
-          build-args: REGISTRY=ghcr.io/
+          build-args: REGISTRY=docker.pkg.github.com/msyea/github-actions-runner
