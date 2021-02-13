@@ -1,4 +1,5 @@
-FROM msyea/ubuntu-dind
+ARG REGISTRY
+FROM ${REGISTRY}msyea/ubuntu-dind
 
 # "/run/user/UID" will be used by default as the value of XDG_RUNTIME_DIR
 RUN mkdir /run/user && chmod 1777 /run/user
