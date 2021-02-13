@@ -1,6 +1,8 @@
 name: Publish Docker image to GitHub
 on:
   push:
+    branches:
+      - main
 
 jobs:
   push_docker:

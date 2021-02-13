@@ -4,7 +4,8 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 ARG REGISTRY=msyea
-FROM ${REGISTRY}/ubuntu-docker
+ARG TAG=latest
+FROM ${REGISTRY}/ubuntu-docker:${TAG}
 
 # https://github.com/docker/docker/blob/master/project/PACKAGERS.md#runtime-dependencies
 ENV DEBIAN_FRONTEND=noninteractive

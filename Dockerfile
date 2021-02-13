@@ -1,5 +1,6 @@
 ARG REGISTRY=msyea
-FROM ${REGISTRY}/ubuntu-dind
+ARG TAG=latest
+FROM ${REGISTRY}/ubuntu-dind:${TAG}
 
 # "/run/user/UID" will be used by default as the value of XDG_RUNTIME_DIR
 RUN mkdir /run/user && chmod 1777 /run/user
