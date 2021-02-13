@@ -17,7 +17,7 @@ function wait_for_process () {
     return 0
 }
 
-INFO "Starting supervisor"
+INFO "Starting dockerd-rootless"
 dockerd-rootless.sh >> /dev/null 2>&1 &
 
 INFO "Waiting for processes to be running"
