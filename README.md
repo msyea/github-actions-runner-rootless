@@ -1,6 +1,6 @@
 # GitHub Actions Runner
 
-Built on `ubuntu:20.04`, configured for rootless dind 🎉, impossible without valuable advice from @kenichi-shibata and @sidick and work by @myoung34.
+Built on `ubuntu:20.04`, configured for rootless dind 🎉, impossible without invaluable advice from @kenichi-shibata and @sidick and work by @msyea.
 ## Inspiration from
 * https://github.com/cruizba/ubuntu-dind showed me it was possible on ubuntu
 * https://github.com/myoung34/docker-github-actions-runner showed it running docker outside docker - inspired API and wrote some README - rights theirs
@@ -27,17 +27,11 @@ This will run the [new self-hosted github actions runners](https://help.github.c
 | `ORG_RUNNER` | Only valid if using `ACCESS_TOKEN`. This will set the runner to an org runner. Default is 'false'. Valid values are 'true' or 'false'. If this is set to true you must also set `ORG_NAME` and makes `REPO_URL` unneccesary |
 | `ORG_NAME` | The organization name for the runner to register under. Requires `ORG_RUNNER` to be 'true'. No default value. |
 | `LABELS` | A comma separated string to indicate the labels. Default is 'default' |
-| `REPO_URL` | If using a non-organization runner this is the full repository url to register under such as 'https://github.com/myoung34/repo' |
+| `REPO_URL` | If using a non-organization runner this is the full repository url to register under such as 'https://github.com/msyea/repo' |
 | `RUNNER_TOKEN` | If not using a PAT for `ACCESS_TOKEN` this will be the runner token provided by the Add Runner UI (a manual process). Note: This token is short lived and will change frequently. `ACCESS_TOKEN` is likely preferred. |
 | `RUNNER_WORKDIR` | The working directory for the runner. Runners on the same host should not share this directory. Default is '/_work'. This must match the source path for the bind-mounted volume at RUNNER_WORKDIR, in order for container actions to access files. |
 | `RUNNER_GROUP` | Name of the runner group to add this runner to (defaults to the default runner group) |
 | `GITHUB_HOST` | Optional URL of the Github Enterprise server e.g github.mycompany.com. Defaults to `github.com`. |
-
-## Examples ##
-
-### Note ###
-
-If you're using a RHEL based OS with SELinux, add `--security-opt=label=disable` to prevent [permission denied](https://github.com/myoung34/docker-github-actions-runner/issues/9)
 
 ### Manual ###
 
@@ -54,7 +48,7 @@ docker run -d --restart always --name github-runner \
   msyea/github-actions-runner:latest
 # per repo
 docker run -d --restart always --name github-runner \
-  -e REPO_URL="https://github.com/myoung34/repo" \
+  -e REPO_URL="https://github.com/msyea/repo" \
   -e RUNNER_NAME="foo-runner" \
   -e RUNNER_TOKEN="footoken" \
   -e RUNNER_WORKDIR="/tmp/github-runner-your-repo" \
