@@ -2,6 +2,6 @@
 
 startup.sh
 
-# su -c runner.sh runner
+runner.sh
 
 bash
