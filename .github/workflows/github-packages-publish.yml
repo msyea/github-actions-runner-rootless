@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
+      - name: Set $GIT_SHORT_SHA
+        run: echo "GIT_SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
         with:
@@ -21,7 +23,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           file: ./Dockerfile.docker
-          tags: docker.pkg.github.com/msyea/github-actions-runner/ubuntu-docker
+          tags: docker.pkg.github.com/msyea/github-actions-runner/ubuntu-docker:${{ env.GIT_SHORT_SHA }}
           push: true
   push_dind:
     needs: push_docker
@@ -30,20 +32,24 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
+      - name: Set $GIT_SHORT_SHA
+        run: echo "GIT_SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
         with:
           registry: docker.pkg.github.com
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - run: docker pull docker.pkg.github.com/msyea/github-actions-runner/ubuntu-docker:latest
+      - run: docker pull docker.pkg.github.com/msyea/github-actions-runner/ubuntu-docker:${{ env.GIT_SHORT_SHA }}
       - name: Push to GitHub
         uses: docker/build-push-action@v2
         with:
           file: ./Dockerfile.dind
-          tags: docker.pkg.github.com/msyea/github-actions-runner/ubuntu-dind
+          tags: docker.pkg.github.com/msyea/github-actions-runner/ubuntu-dind:${{ env.GIT_SHORT_SHA }}
           push: true
-          build-args: REGISTRY=docker.pkg.github.com/msyea/github-actions-runner
+          build-args: |
+            REGISTRY=docker.pkg.github.com/msyea/github-actions-runner
+            TAG=${{ env.GIT_SHORT_SHA }}
   push_gha:
     needs: [push_docker, push_dind]
     name: Push GitHub Actions runner image to GitHub
@@ -51,16 +57,20 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
+      - name: Set $GIT_SHORT_SHA
+        run: echo "GIT_SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
         with:
           registry: docker.pkg.github.com
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - run: docker pull docker.pkg.github.com/msyea/github-actions-runner/ubuntu-dind:latest
+      - run: docker pull docker.pkg.github.com/msyea/github-actions-runner/ubuntu-dind:${{ env.GIT_SHORT_SHA }}
       - name: Push to GitHub
         uses: docker/build-push-action@v2
         with:
-          tags: docker.pkg.github.com/msyea/github-actions-runner/github-actions-runner
+          tags: docker.pkg.github.com/msyea/github-actions-runner/github-actions-runner:${{ env.GIT_SHORT_SHA }}
           push: true
-          build-args: REGISTRY=docker.pkg.github.com/msyea/github-actions-runner
+          build-args: |
+            REGISTRY=docker.pkg.github.com/msyea/github-actions-runner
+            TAG=${{ env.GIT_SHORT_SHA }}
