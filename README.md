@@ -1,6 +1,6 @@
 # GitHub Actions Runner
 
-Built on `ubuntu:20.04`, configured for rootless dind 🎉, impossible without invaluable advice from @kenichi-shibata and @sidick and work by @msyea.
+Built on `ubuntu:20.04`, configured for rootless dind 🎉, impossible without invaluable advice from [@kenichi-shibata](https://github.com/kenichi-shibata) and [@sidick](https://github.com/sidick).
 ## Inspiration from
 * https://github.com/cruizba/ubuntu-dind showed me it was possible on ubuntu
 * https://github.com/myoung34/docker-github-actions-runner showed it running docker outside docker - inspired API and wrote some README - rights theirs
