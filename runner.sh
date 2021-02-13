@@ -25,8 +25,6 @@ if [[ -n "${ACCESS_TOKEN}" ]]; then
   _SHORT_URL=$(echo "${_TOKEN}" | jq -r .short_url)
 fi
 
-su runner
-
 echo "Configuring"
 ./config.sh \
     --url "${_SHORT_URL}" \
