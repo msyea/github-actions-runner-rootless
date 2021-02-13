@@ -70,4 +70,4 @@ ENV XDG_RUNTIME_DIR=/home/rootless/.docker/run \
  PATH=/usr/local/bin:$PATH \
  DOCKER_HOST=unix:///home/rootless/.docker/run/docker.sock
 
-ENTRYPOINT [""]
+ENTRYPOINT ["github-actions-entrypoint.sh"]
