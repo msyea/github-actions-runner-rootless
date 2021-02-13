@@ -62,7 +62,7 @@ jobs:
           registry: docker.pkg.github.com
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - run: docker pull docker.pkg.github.com/msyea/github-actions-runner/ubuntu-dind:${{ github.event.release.tag_name }}}
+      - run: docker pull docker.pkg.github.com/msyea/github-actions-runner/ubuntu-dind:${{ github.event.release.tag_name }}
       - name: Push to GitHub
         uses: docker/build-push-action@v2
         with:
