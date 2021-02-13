@@ -43,7 +43,7 @@ RUN set -eux; \
 	chown -R rootless:rootless /home/rootless/.local/share/docker
 VOLUME /home/rootless/.local/share/docker
 
-# RUN apt-get -y install curl supervisor
+RUN apt-get -y install jq
 
 WORKDIR /actions-runner
 RUN chown rootless:rootless /actions-runner
