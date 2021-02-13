@@ -1,0 +1,137 @@
+name: Release images to GitHub Repository and DockerHub
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish_github_ubuntu_docker:
+    name: Push Ubuntu Docker image to GitHub
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: docker.pkg.github.com
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Push to GitHub
+        uses: docker/build-push-action@v2
+        with:
+          file: ./Dockerfile.docker
+          tags: |
+            docker.pkg.github.com/msyea/github-actions-runner/ubuntu-docker:latest
+            docker.pkg.github.com/msyea/github-actions-runner/ubuntu-docker:${{ github.event.release.tag_name }}
+          push: true
+  publish_github_ubuntu_dind:
+    needs: publish_github_ubuntu_docker
+    name: Push Ubuntu DinD image to GitHub
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: docker.pkg.github.com
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - run: docker pull docker.pkg.github.com/msyea/github-actions-runner/ubuntu-docker:${{ github.event.release.tag_name }}
+      - name: Push to GitHub
+        uses: docker/build-push-action@v2
+        with:
+          file: ./Dockerfile.dind
+          tags: |
+            docker.pkg.github.com/msyea/github-actions-runner/ubuntu-dind:latest
+            docker.pkg.github.com/msyea/github-actions-runner/ubuntu-dind:${{ github.event.release.tag_name }}
+          push: true
+          build-args: |
+            REGISTRY=docker.pkg.github.com/msyea/github-actions-runner
+            TAG=${{ github.event.release.tag_name }}
+  publish_github_github_actions_runner:
+    needs: [publish_github_ubuntu_docker, publish_github_ubuntu_dind]
+    name: Push GitHub Actions runner image to GitHub
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: docker.pkg.github.com
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - run: docker pull docker.pkg.github.com/msyea/github-actions-runner/ubuntu-dind:${{ github.event.release.tag_name }}}
+      - name: Push to GitHub
+        uses: docker/build-push-action@v2
+        with:
+          tags: |
+            docker.pkg.github.com/msyea/github-actions-runner/github-actions-runner:latest
+            docker.pkg.github.com/msyea/github-actions-runner/github-actions-runner:${{ github.event.release.tag_name }}
+          push: true
+          build-args: |
+            REGISTRY=docker.pkg.github.com/msyea/github-actions-runner
+            TAG=${{ github.event.release.tag_name }}
+  publish_docker_ubuntu_docker:
+    name: Push Ubuntu Docker image to Docker Hub
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Push to Docker Hub
+        uses: docker/build-push-action@v2
+        with:
+          file: ./Dockerfile.docker
+          tags: |
+            msyea/ubuntu-docker:latest
+            msyea/ubuntu-docker:${{ github.event.release.tag_name }}
+          push: true
+  publish_docker_ubuntu_dind:
+    needs: publish_docker_ubuntu_docker
+    name: Push Ubuntu DinD image to Docker Hub
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Push to Docker Hub
+        uses: docker/build-push-action@v2
+        with:
+          file: ./Dockerfile.dind
+          tags: |
+            msyea/ubuntu-dind:latest
+            msyea/ubuntu-dind:${{ github.event.release.tag_name }}
+          push: true
+          build-args: |
+            TAG=${{ github.event.release.tag_name }}
+  publish_docker_github_actions_runner:
+    needs: [publish_docker_ubuntu_docker, publish_docker_ubuntu_dind]
+    name: Push GitHub Actions runner image to Docker Hub
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Push to Docker Hub
+        uses: docker/build-push-action@v2
+        with:
+          tags: |
+            msyea/github-actions-runner:latest
+            msyea/github-actions-runner:${{ github.event.release.tag_name }}
+          push: true
+          build-args: |
+            TAG=${{ github.event.release.tag_name }}
