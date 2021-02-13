@@ -9,7 +9,7 @@ deregister_runner() {
 }
 
 _RUNNER_NAME=${RUNNER_NAME:-${RUNNER_NAME_PREFIX:-github-runner}-$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 13 ; echo '')}
-_RUNNER_WORKDIR=${RUNNER_WORKDIR:-/_work}
+_RUNNER_WORKDIR=${RUNNER_WORKDIR:-/actions-runner/_work}
 _LABELS=${LABELS:-default}
 _RUNNER_GROUP=${RUNNER_GROUP:-Default}
 _SHORT_URL=${REPO_URL}
