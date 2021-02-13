@@ -61,7 +61,7 @@ RUN ./bin/installdependencies.sh
 
 # RUN groupadd docker \
 #   && usermod -aG docker runner
-
+COPY logger.sh /opt/bash-utils/
 COPY github-actions-entrypoint.sh runner.sh token.sh dockerd-rootless.sh dockerd-rootless-setup-tool.sh /usr/local/bin/
 
 USER rootless
