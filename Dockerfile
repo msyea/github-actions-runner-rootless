@@ -14,12 +14,15 @@ RUN set -eux; \
 	echo 'rootless:100000:65536' >> /etc/subuid; \
 	echo 'rootless:100000:65536' >> /etc/subgid
 
+ENV DOCKER_CHANNEL=stable \
+  DOCKER_VERSION=20.10.6
+
 RUN set -eux; \
 	\
 	arch="$(uname --m)"; \
 	case "$arch" in \
 		'x86_64') \
-			url='https://download.docker.com/linux/static/stable/x86_64/docker-rootless-extras-20.10.3.tgz'; \
+			url='https://download.docker.com/linux/static/${DOCKER_CHANNEL}/x86_64/docker-rootless-extras-${DOCKER_VERSION}.tgz'; \
 			;; \
 		*) echo >&2 "error: unsupported architecture ($arch)"; exit 1 ;; \
 	esac; \
