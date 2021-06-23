@@ -22,7 +22,7 @@ RUN set -eux; \
 	arch="$(uname --m)"; \
 	case "$arch" in \
 		'x86_64') \
-			url='https://download.docker.com/linux/static/${DOCKER_CHANNEL}/x86_64/docker-rootless-extras-${DOCKER_VERSION}.tgz'; \
+			url="https://download.docker.com/linux/static/${DOCKER_CHANNEL}/x86_64/docker-rootless-extras-${DOCKER_VERSION}.tgz"; \
 			;; \
 		*) echo >&2 "error: unsupported architecture ($arch)"; exit 1 ;; \
 	esac; \
