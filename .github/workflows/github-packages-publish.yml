@@ -14,14 +14,14 @@ jobs:
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
         with:
-          registry: docker.pkg.github.com
+          registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Push to GitHub
         uses: docker/build-push-action@v2
         with:
           file: ./Dockerfile.docker
-          tags: docker.pkg.github.com/msyea/github-actions-runner/ubuntu-docker:${{ env.GIT_SHORT_SHA }}
+          tags: ghcr.io/msyea/ubuntu-docker:${{ env.GIT_SHORT_SHA }}
           push: true
   push_dind:
     needs: push_docker
@@ -35,18 +35,18 @@ jobs:
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
         with:
-          registry: docker.pkg.github.com
+          registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - run: docker pull docker.pkg.github.com/msyea/github-actions-runner/ubuntu-docker:${{ env.GIT_SHORT_SHA }}
+      - run: docker pull ghcr.io/msyea/ubuntu-docker:${{ env.GIT_SHORT_SHA }}
       - name: Push to GitHub
         uses: docker/build-push-action@v2
         with:
           file: ./Dockerfile.dind
-          tags: docker.pkg.github.com/msyea/github-actions-runner/ubuntu-dind:${{ env.GIT_SHORT_SHA }}
+          tags: ghcr.io/msyea/ubuntu-dind:${{ env.GIT_SHORT_SHA }}
           push: true
           build-args: |
-            REGISTRY=docker.pkg.github.com/msyea/github-actions-runner
+            REGISTRY=ghcr.io/msyea
             TAG=${{ env.GIT_SHORT_SHA }}
   push_gha:
     needs: [push_docker, push_dind]
@@ -60,15 +60,15 @@ jobs:
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
         with:
-          registry: docker.pkg.github.com
+          registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - run: docker pull docker.pkg.github.com/msyea/github-actions-runner/ubuntu-dind:${{ env.GIT_SHORT_SHA }}
+      - run: docker pull ghcr.io/msyea/ubuntu-dind:${{ env.GIT_SHORT_SHA }}
       - name: Push to GitHub
         uses: docker/build-push-action@v2
         with:
-          tags: docker.pkg.github.com/msyea/github-actions-runner/github-actions-runner:${{ env.GIT_SHORT_SHA }}
+          tags: ghcr.io/msyea/github-actions-runner:${{ env.GIT_SHORT_SHA }}
           push: true
           build-args: |
-            REGISTRY=docker.pkg.github.com/msyea/github-actions-runner
+            REGISTRY=ghcr.io/msyea
             TAG=${{ env.GIT_SHORT_SHA }}
