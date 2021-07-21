@@ -49,6 +49,7 @@ RUN set -eux; \
 VOLUME /home/rootless/.local/share/docker
 
 RUN apt-get -y install jq curl
+RUN apt-get -y install awscli
 
 WORKDIR /actions-runner
 RUN chown rootless:rootless /actions-runner
