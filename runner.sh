@@ -39,4 +39,4 @@ echo "Configuring"
 unset RUNNER_TOKEN
 trap deregister_runner SIGINT SIGQUIT SIGTERM
 
-./bin/runsvc.sh
+./run.sh --once
