@@ -54,8 +54,8 @@ RUN apt-get -y install awscli
 WORKDIR /actions-runner
 RUN chown rootless:rootless /actions-runner
 USER rootless
-RUN wget -O actions-runner-linux-x64-2.277.1.tar.gz https://github.com/actions/runner/releases/download/v2.277.1/actions-runner-linux-x64-2.277.1.tar.gz
-RUN tar xzf ./actions-runner-linux-x64-2.277.1.tar.gz
+RUN wget -O actions-runner-linux-x64-2.278.0.tar.gz https://github.com/actions/runner/releases/download/v2.278.0/actions-runner-linux-x64-2.278.0.tar.gz
+RUN tar xzf ./actions-runner-linux-x64-2.278.0.tar.gz
 USER root
 RUN ./bin/installdependencies.sh
 
