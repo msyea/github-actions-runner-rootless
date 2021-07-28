@@ -51,11 +51,13 @@ VOLUME /home/rootless/.local/share/docker
 RUN apt-get -y install jq curl
 RUN apt-get -y install awscli
 
+ENV RUNNER_VERSION=2.279.0
+
 WORKDIR /actions-runner
 RUN chown rootless:rootless /actions-runner
 USER rootless
-RUN wget -O actions-runner-linux-x64-2.278.0.tar.gz https://github.com/actions/runner/releases/download/v2.278.0/actions-runner-linux-x64-2.278.0.tar.gz
-RUN tar xzf ./actions-runner-linux-x64-2.278.0.tar.gz
+RUN wget -O actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz
+RUN tar xzf ./actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz
 USER root
 RUN ./bin/installdependencies.sh
 
