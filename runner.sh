@@ -40,3 +40,5 @@ unset RUNNER_TOKEN
 trap deregister_runner SIGINT SIGQUIT SIGTERM
 
 ./run.sh --once
+
+deregister_runner
