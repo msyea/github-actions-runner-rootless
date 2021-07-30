@@ -50,7 +50,7 @@ VOLUME /home/rootless/.local/share/docker
 
 RUN apt-get -y install awscli
 
-RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash - \
+RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
 	apt-get install -y nodejs
 
 COPY packages.txt .
