@@ -48,7 +48,13 @@ RUN set -eux; \
 	chown -R rootless:rootless /home/rootless/.local/share/docker
 VOLUME /home/rootless/.local/share/docker
 
-RUN apt-get -y install jq curl awscli zip
+RUN apt-get -y install awscli
+
+RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash - \
+	apt-get install -y nodejs
+
+COPY packages.txt .
+RUN xargs -a packages.txt apt-get -y install
 
 ENV RUNNER_VERSION=2.279.0
 
