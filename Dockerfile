@@ -58,7 +58,8 @@ RUN apt-get install -y nodejs
 
 ENV COMPOSE_VERSION=1.29.2
 
-RUN sudo curl -L "https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-Linux-x86_64" -o /usr/local/bin/docker-compose
+RUN curl -L "https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-Linux-x86_64" -o /usr/local/bin/docker-compose; \
+	chmod +x /usr/local/bin/docker-compose
 
 ENV RUNNER_VERSION=2.279.0
 
