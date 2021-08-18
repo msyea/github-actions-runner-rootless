@@ -61,7 +61,7 @@ ENV COMPOSE_VERSION=1.29.2
 RUN curl -L "https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-Linux-x86_64" -o /usr/local/bin/docker-compose; \
 	chmod +x /usr/local/bin/docker-compose
 
-ENV RUNNER_VERSION=2.280.1
+ENV RUNNER_VERSION=2.280.2
 
 WORKDIR /actions-runner
 RUN chown rootless:rootless /actions-runner
