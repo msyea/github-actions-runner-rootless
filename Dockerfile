@@ -19,7 +19,7 @@ ENV DOCKER_CHANNEL=stable \
 
 # Ubuntu focal (20.04) has git v2.25, but GitHub Actions require higher. We
 # build git from source instead.
-ARG GIT_VERSION="2.29.0"
+ARG GIT_VERSION="2.33.0"
 ARG GH_RUNNER_VERSION="2.280.3"
 
 RUN set -eux; \
