@@ -63,6 +63,7 @@ RUN apt-get update \
 					zlib1g-dev \
 					zstd \
 					gettext \
+					libcurl4-openssl-dev \
 		&& cd /tmp \
 		&& curl -sL https://www.kernel.org/pub/software/scm/git/git-${GIT_VERSION}.tar.gz -o git.tgz \
 		&& tar zxf git.tgz \
