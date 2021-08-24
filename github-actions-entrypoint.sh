@@ -24,7 +24,7 @@ INFO "Waiting for processes to be running"
 processes=(dockerd)
 
 for process in "${processes[@]}"; do
-    wait_for_process "$process" 60
+    wait_for_process "$process"
     if [ $? -ne 0 ]; then
         ERROR "$process is not running after max time"
         exit 1
