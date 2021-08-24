@@ -21,7 +21,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           file: ./Dockerfile.docker
-          tags: ghcr.io/msyea/ubuntu-docker:${{ env.GIT_SHORT_SHA }}
+          tags: ghcr.io/${{ github.repository_owner }}/ubuntu-docker:${{ env.GIT_SHORT_SHA }}
           push: true
   push_dind:
     needs: push_docker
@@ -38,15 +38,15 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - run: docker pull ghcr.io/msyea/ubuntu-docker:${{ env.GIT_SHORT_SHA }}
+      - run: docker pull ghcr.io/${{ github.repository_owner }}/ubuntu-docker:${{ env.GIT_SHORT_SHA }}
       - name: Push to GitHub
         uses: docker/build-push-action@v2
         with:
           file: ./Dockerfile.dind
-          tags: ghcr.io/msyea/ubuntu-dind:${{ env.GIT_SHORT_SHA }}
+          tags: ghcr.io/${{ github.repository_owner }}/ubuntu-dind:${{ env.GIT_SHORT_SHA }}
           push: true
           build-args: |
-            REGISTRY=ghcr.io/msyea
+            REGISTRY=ghcr.io/${{ github.repository_owner }}
             TAG=${{ env.GIT_SHORT_SHA }}
   push_gha:
     needs: [push_docker, push_dind]
@@ -63,12 +63,12 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - run: docker pull ghcr.io/msyea/ubuntu-dind:${{ env.GIT_SHORT_SHA }}
+      - run: docker pull ghcr.io/${{ github.repository_owner }}/ubuntu-dind:${{ env.GIT_SHORT_SHA }}
       - name: Push to GitHub
         uses: docker/build-push-action@v2
         with:
-          tags: ghcr.io/msyea/github-actions-runner:${{ env.GIT_SHORT_SHA }}
+          tags: ghcr.io/${{ github.repository_owner }}/github-actions-runner:${{ env.GIT_SHORT_SHA }}
           push: true
           build-args: |
-            REGISTRY=ghcr.io/msyea
+            REGISTRY=ghcr.io/${{ github.repository_owner }}
             TAG=${{ env.GIT_SHORT_SHA }}
