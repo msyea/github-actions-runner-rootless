@@ -47,10 +47,13 @@ RUN set -eux; \
 	rootlesskit --version; \
 	vpnkit --version
 
-# pre-create "/var/lib/docker" for our rootless user
+# pre-create "/var/lib/docker" for our rootless user and arrange for .local
+# directory to be owned by rootless so default XDG locations associated to this
+# directory (XDG_STATE_HOME and XDG_DATA_HOME) can be used.
 RUN set -eux; \
 	mkdir -p /home/rootless/.local/share/docker; \
-	chown -R rootless:rootless /home/rootless/.local/share/docker
+	mkdir -p /home/rootless/.local/state; \
+	chown -R rootless:rootless /home/rootless/.local
 VOLUME /home/rootless/.local/share/docker
 
 RUN apt-get update \
@@ -72,14 +75,15 @@ RUN apt-get update \
 		&& make \
 		&& make install \
 		&& rm -rf /var/lib/apt/lists/* \
-  	&& rm -rf /tmp/* \
+		&& rm -rf /tmp/* \
 		&& git --version
 
 WORKDIR /actions-runner
 RUN chown rootless:rootless /actions-runner
 USER rootless
 RUN wget -O actions-runner-linux-x64-${GH_RUNNER_VERSION}.tar.gz https://github.com/actions/runner/releases/download/v${GH_RUNNER_VERSION}/actions-runner-linux-x64-${GH_RUNNER_VERSION}.tar.gz \
-		&& tar xzf ./actions-runner-linux-x64-${GH_RUNNER_VERSION}.tar.gz
+		&& tar xzf ./actions-runner-linux-x64-${GH_RUNNER_VERSION}.tar.gz \
+		&& rm -f ./actions-runner-linux-x64-${GH_RUNNER_VERSION}.tar.gz
 USER root
 RUN ./bin/installdependencies.sh
 
