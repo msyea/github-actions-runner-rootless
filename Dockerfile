@@ -15,7 +15,12 @@ RUN set -eux; \
 	echo 'rootless:100000:65536' >> /etc/subgid
 
 ENV DOCKER_CHANNEL=stable \
-  DOCKER_VERSION=20.10.6
+  DOCKER_VERSION=20.10.8
+
+# Ubuntu focal (20.04) has git v2.25, but GitHub Actions require higher. We
+# build git from source instead.
+ARG GIT_VERSION="2.29.0"
+ARG GH_RUNNER_VERSION="2.280.3"
 
 RUN set -eux; \
 	\
@@ -48,14 +53,32 @@ RUN set -eux; \
 	chown -R rootless:rootless /home/rootless/.local/share/docker
 VOLUME /home/rootless/.local/share/docker
 
-RUN apt-get -y install jq curl
-RUN apt-get -y install awscli
+RUN apt-get update \
+		&& apt-get -y install \
+					jq \
+					curl \
+					awscli \
+					software-properties-common \
+					build-essential \
+					zlib1g-dev \
+					zstd \
+					gettext \
+		&& cd /tmp \
+		&& curl -sL https://www.kernel.org/pub/software/scm/git/git-${GIT_VERSION}.tar.gz -o git.tgz \
+		&& tar zxf git.tgz \
+		&& cd git-${GIT_VERSION} \
+		&& ./configure --prefix=/usr \
+		&& make \
+		&& make install \
+		&& rm -rf /var/lib/apt/lists/* \
+  	&& rm -rf /tmp/* \
+		&& git --version
 
 WORKDIR /actions-runner
 RUN chown rootless:rootless /actions-runner
 USER rootless
-RUN wget -O actions-runner-linux-x64-2.277.1.tar.gz https://github.com/actions/runner/releases/download/v2.277.1/actions-runner-linux-x64-2.277.1.tar.gz
-RUN tar xzf ./actions-runner-linux-x64-2.277.1.tar.gz
+RUN wget -O actions-runner-linux-x64-${GH_RUNNER_VERSION}.tar.gz https://github.com/actions/runner/releases/download/v${GH_RUNNER_VERSION}/actions-runner-linux-x64-${GH_RUNNER_VERSION}.tar.gz \
+		&& tar xzf ./actions-runner-linux-x64-${GH_RUNNER_VERSION}.tar.gz
 USER root
 RUN ./bin/installdependencies.sh
 
