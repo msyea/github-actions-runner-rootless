@@ -22,6 +22,10 @@ ENV DOCKER_CHANNEL=stable \
 ARG GIT_VERSION="2.33.0"
 ARG GH_RUNNER_VERSION="2.280.3"
 
+# Root URL and version for Docker compose releases
+ARG COMPOSE_ROOT=https://github.com/docker/compose/releases/download
+ARG COMPOSE_VERSION=1.29.2
+
 RUN set -eux; \
 	\
 	arch="$(uname --m)"; \
@@ -67,6 +71,9 @@ RUN apt-get update \
 					zstd \
 					gettext \
 					libcurl4-openssl-dev \
+		&& curl -L "${COMPOSE_ROOT%/}/${COMPOSE_VERSION#v*}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose \
+		&& chmod a+x /usr/local/bin/docker-compose \
+		&& docker-compose --version \
 		&& cd /tmp \
 		&& curl -sL https://www.kernel.org/pub/software/scm/git/git-${GIT_VERSION}.tar.gz -o git.tgz \
 		&& tar zxf git.tgz \
