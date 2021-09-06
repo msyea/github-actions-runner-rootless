@@ -4,6 +4,7 @@ deregister_runner() {
   echo "Caught SIGTERM. Deregistering runner"
   _TOKEN=$(token.sh)
   RUNNER_TOKEN=$(echo "${_TOKEN}" | jq -r .token)
+  docker system prune -a -f
   ./config.sh remove --token "${RUNNER_TOKEN}"
   exit
 }
