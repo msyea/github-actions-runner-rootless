@@ -20,7 +20,7 @@ ENV DOCKER_CHANNEL=stable \
 # Ubuntu focal (20.04) has git v2.25, but GitHub Actions require higher. We
 # build git from source instead.
 ARG GIT_VERSION="2.33.0"
-ARG GH_RUNNER_VERSION="2.282.1"
+ARG GH_RUNNER_VERSION="2.289.1"
 
 # Root URL and version for Docker compose releases
 ARG COMPOSE_ROOT=https://github.com/docker/compose/releases/download
